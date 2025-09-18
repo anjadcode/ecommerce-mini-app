@@ -1,6 +1,7 @@
 from sqlalchemy import Column, Integer, String, Float, DateTime, JSON
 from sqlalchemy.sql import func
 from app.database import Base
+from datetime import datetime
 
 # Model database untuk pesanan
 class Order(Base):
@@ -13,7 +14,7 @@ class Order(Base):
     customer_name = Column(String(255), name='customerName')
     customer_email = Column(String(255), name='customerEmail')
     status = Column(String(50), default='pending')
-    created_at = Column(DateTime(timezone=True), server_default=func.now(), name='createdAt')
+    created_at = Column(DateTime(timezone=True), server_default=func.now(), default=datetime.utcnow, name='createdAt')
 
     def to_dict(self):
         """Mengkonversi model menjadi dictionary"""
