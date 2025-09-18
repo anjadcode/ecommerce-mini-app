@@ -34,20 +34,28 @@ const Checkout: React.FC = () => {
     try {
       dispatch(createOrderStart());
       
-      // Menggunakan endpoint lokal backend untuk membuat pesanan
-      const response = await axios.post('http://localhost:8000/orders/', {
-        items: products,
+      // Pastikan data sesuai dengan skema backend
+      const orderData = {
+        items: products.map(product => ({
+          id: product.id,
+          name: product.name,
+          price: product.price
+        })),
         total: calculateTotal(),
         customerName,
         customerEmail,
         status: 'pending'
-      });
+      };
+
+      // Menggunakan endpoint lokal backend untuk membuat pesanan
+      const response = await axios.post('http://localhost:8000/orders/', orderData);
 
       dispatch(createOrderSuccess(response.data));
       
       // Kosongkan keranjang setelah checkout berhasil
       dispatch(clearCart());
     } catch (err) {
+      console.error('Checkout error:', err);
       dispatch(createOrderFailure(err instanceof Error ? err.message : 'Checkout failed'));
     }
   };
