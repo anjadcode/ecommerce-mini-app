@@ -1,0 +1,87 @@
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState, AppDispatch } from '../redux/store';
+import { 
+  createOrderStart, 
+  createOrderSuccess, 
+  createOrderFailure 
+} from '../redux/slices/orderSlice';
+import axios from 'axios';
+
+const Checkout: React.FC = () => {
+  const dispatch: AppDispatch = useDispatch();
+  const { items: products } = useSelector((state: RootState) => state.products);
+  const { currentOrder, loading, error } = useSelector((state: RootState) => state.orders);
+
+  const [customerName, setCustomerName] = useState('');
+  const [customerEmail, setCustomerEmail] = useState('');
+
+  const calculateTotal = () => {
+    return products.reduce((total, product) => total + product.price, 0);
+  };
+
+  const handleCheckout = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    try {
+      dispatch(createOrderStart());
+      
+      // Menggunakan endpoint lokal backend untuk membuat pesanan
+      const response = await axios.post('http://localhost:8000/orders/', {
+        items: products,
+        total: calculateTotal(),
+        customerName,
+        customerEmail,
+        status: 'pending'
+      });
+
+      dispatch(createOrderSuccess(response.data));
+    } catch (err) {
+      dispatch(createOrderFailure(err instanceof Error ? err.message : 'Checkout failed'));
+    }
+  };
+
+  return (
+    <div className="checkout">
+      <h2>Checkout</h2>
+      {products.length === 0 ? (
+        <p>Your cart is empty</p>
+      ) : (
+        <form onSubmit={handleCheckout}>
+          <div>
+            <label>Name:</label>
+            <input 
+              type="text" 
+              value={customerName}
+              onChange={(e) => setCustomerName(e.target.value)}
+              required 
+            />
+          </div>
+          <div>
+            <label>Email:</label>
+            <input 
+              type="email" 
+              value={customerEmail}
+              onChange={(e) => setCustomerEmail(e.target.value)}
+              required 
+            />
+          </div>
+          <h3>Order Summary</h3>
+          {products.map(product => (
+            <div key={product.id}>
+              <p>{product.name} - ${product.price}</p>
+            </div>
+          ))}
+          <p>Total: ${calculateTotal()}</p>
+          <button type="submit" disabled={loading}>
+            {loading ? 'Processing...' : 'Complete Order'}
+          </button>
+          {error && <p style={{color: 'red'}}>{error}</p>}
+          {currentOrder && <p>Order Successful! Order ID: {currentOrder.id}</p>}
+        </form>
+      )}
+    </div>
+  );
+};
+
+export default Checkout;
