@@ -27,41 +27,67 @@ const OrderList: React.FC = () => {
     fetchOrders();
   }, [dispatch]);
 
-  if (loading) return <div>Loading orders...</div>;
-  if (error) return <div>Error: {error}</div>;
+  if (loading) return (
+    <div className="order-list-loading">
+      <div className="spinner"></div>
+      <p>Loading orders...</p>
+    </div>
+  );
+
+  if (error) return (
+    <div className="order-list-error">
+      <p>Error: {error}</p>
+      <button onClick={() => window.location.reload()}>Retry</button>
+    </div>
+  );
 
   return (
-    <div className="order-list">
+    <div className="order-list-container">
       <h2>Your Orders</h2>
       {orders.length === 0 ? (
-        <p>No orders found</p>
+        <div className="order-list-empty">
+          <p>No orders found</p>
+          <p>Start shopping to place your first order!</p>
+        </div>
       ) : (
-        <table>
-          <thead>
-            <tr>
-              <th>Order ID</th>
-              <th>Total</th>
-              <th>Status</th>
-              <th>Date</th>
-              <th>Items</th>
-            </tr>
-          </thead>
-          <tbody>
-            {orders.map(order => (
-              <tr key={order.id}>
-                <td>{order.id}</td>
-                <td>${order.total.toFixed(2)}</td>
-                <td>{order.status}</td>
-                <td>{new Date(order.createdAt).toLocaleDateString()}</td>
-                <td>
-                  {order.items.map(item => (
-                    <div key={item.id}>{item.name}</div>
-                  ))}
-                </td>
+        <div className="order-list-table-container">
+          <table className="order-list-table">
+            <thead>
+              <tr>
+                <th>Order ID</th>
+                <th>Total</th>
+                <th>Status</th>
+                <th>Date</th>
+                <th>Items</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {orders.map(order => (
+                <tr key={order.id} className="order-list-row">
+                  <td className="order-id">#{order.id}</td>
+                  <td className="order-total">${order.total.toFixed(2)}</td>
+                  <td className={`order-status ${order.status.toLowerCase()}`}>
+                    {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
+                  </td>
+                  <td className="order-date">
+                    {new Date(order.createdAt).toLocaleDateString('id-ID', {
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric'
+                    })}
+                  </td>
+                  <td className="order-items">
+                    {order.items.map(item => (
+                      <div key={item.id} className="order-item">
+                        {item.name} (${item.price.toFixed(2)})
+                      </div>
+                    ))}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
     </div>
   );
