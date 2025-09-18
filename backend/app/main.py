@@ -44,7 +44,14 @@ def read_products(skip: int = 0, limit: int = 8, db: Session = Depends(get_db)):
 # Endpoint untuk membuat pesanan
 @app.post("/orders/", response_model=OrderResponse)
 def create_order(order: OrderCreate, db: Session = Depends(get_db)):
-    db_order = Order(**order.dict())
+    # Konstruksi manual untuk Order
+    db_order = Order(
+        items=order.items,
+        total=order.total,
+        customer_name=order.customerName,  # Mapping manual
+        customer_email=order.customerEmail,  # Mapping manual
+        status=order.status or 'pending'
+    )
     db.add(db_order)
     db.commit()
     db.refresh(db_order)
