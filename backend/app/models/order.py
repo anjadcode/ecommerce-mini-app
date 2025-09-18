@@ -9,10 +9,11 @@ class Order(Base):
     id = Column(Integer, primary_key=True, index=True)
     items = Column(JSON)  # Menyimpan daftar produk dalam format JSON
     total = Column(Float)
-    customer_name = Column(String(255))
-    customer_email = Column(String(255))
+    # Sesuaikan nama kolom dengan frontend
+    customer_name = Column(String(255), name='customerName')
+    customer_email = Column(String(255), name='customerEmail')
     status = Column(String(50), default='pending')
-    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    created_at = Column(DateTime(timezone=True), server_default=func.now(), name='createdAt')
 
     def to_dict(self):
         """Mengkonversi model menjadi dictionary"""

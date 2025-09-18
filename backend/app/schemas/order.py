@@ -7,14 +7,14 @@ from .product import ProductResponse
 class OrderCreate(BaseModel):
     items: List[dict]
     total: float
-    customerName: str
-    customerEmail: str
+    customerName: str  # Sesuaikan dengan nama field di frontend
+    customerEmail: str  # Sesuaikan dengan nama field di frontend
     status: Optional[str] = 'pending'
 
 # Skema untuk respon pesanan
 class OrderResponse(OrderCreate):
     id: int
-    createdAt: datetime
+    createdAt: datetime  # Sesuaikan dengan nama field di frontend
 
     class Config:
         orm_mode = True
