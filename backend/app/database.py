@@ -2,9 +2,8 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
-# Konfigurasi koneksi database MySQL
-# Ganti dengan kredensial database Anda
-SQLALCHEMY_DATABASE_URL = "mysql://username:password@localhost/ecommerce_db"
+# Konfigurasi koneksi database MySQL dengan kredensial baru
+SQLALCHEMY_DATABASE_URL = "mysql://ecommerce_user:ecommerce_pass@localhost/ecommerce_db"
 
 # Membuat engine database
 engine = create_engine(SQLALCHEMY_DATABASE_URL)

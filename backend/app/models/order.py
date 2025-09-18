@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String, Float, DateTime, JSON
 from sqlalchemy.sql import func
-from ..database import Base
+from app.database import Base
 
 # Model database untuk pesanan
 class Order(Base):
