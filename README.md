@@ -126,3 +126,48 @@ SQLALCHEMY_DATABASE_URL = "mysql://username:password@localhost/ecommerce_db"
 - Pastikan semua dependencies terinstall
 - Gunakan Python 3.8+ dan Node.js 14+
 
+## RESTful API Endpoints
+
+### Produk
+- **GET `/products/`**
+  - Deskripsi: Mengambil daftar produk
+  - Parameter:
+    - `skip` (opsional): Jumlah produk yang dilewati (untuk pagination)
+    - `limit` (opsional): Jumlah produk yang diambil
+  - Response: Daftar produk
+
+### Pesanan
+- **POST `/orders/`**
+  - Deskripsi: Membuat pesanan baru
+  - Request Body:
+    ```json
+    {
+      "items": [
+        {
+          "id": 1,
+          "name": "Nama Produk",
+          "price": 100.00
+        }
+      ],
+      "total": 100.00,
+      "customerName": "Nama Pelanggan",
+      "customerEmail": "email@example.com",
+      "status": "pending"
+    }
+    ```
+  - Response: Detail pesanan yang dibuat
+
+- **GET `/orders/`**
+  - Deskripsi: Mengambil daftar pesanan
+  - Parameter:
+    - `skip` (opsional): Jumlah pesanan yang dilewati (untuk pagination)
+    - `limit` (opsional): Jumlah pesanan yang diambil
+  - Response: Daftar pesanan
+
+### Teknologi API
+- Framework: FastAPI
+- Dokumentasi: Swagger UI tersedia di `/docs`
+- Format Respons: JSON
+- Validasi: Pydantic
+- Database ORM: SQLAlchemy
+
