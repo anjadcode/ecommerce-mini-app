@@ -107,6 +107,9 @@ npm start
 
 ## Konfigurasi Tambahan
 
+### Documentasi Api (Fast API)
+https://localhost:8000/docs
+
 ### Mengubah Koneksi Database
 Edit file `backend/app/database.py` untuk mengubah kredensial database:
 ```python
