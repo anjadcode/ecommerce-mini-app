@@ -126,8 +126,3 @@ SQLALCHEMY_DATABASE_URL = "mysql://username:password@localhost/ecommerce_db"
 - Pastikan semua dependencies terinstall
 - Gunakan Python 3.8+ dan Node.js 14+
 
-## Kontributor
-- [Nama Anda]
-
-## Lisensi
-MIT License
