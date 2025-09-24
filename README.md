@@ -70,7 +70,7 @@ source venv/bin/activate
 pip install -r requirements.txt
 
 # Jalankan migrasi database
-PYTHONPATH=. alembic upgrade head
+#PYTHONPATH=. alembic upgrade head
 
 # (Opsional) Seed data produk awal
 PYTHONPATH=. python -m app.seed_data
